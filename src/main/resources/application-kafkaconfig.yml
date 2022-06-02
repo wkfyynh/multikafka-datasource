@@ -1,0 +1,32 @@
+kafka:
+  cust:
+    server:
+      1:
+        consumerConf: #kafka消费端核心配置
+          "[bootstrap.servers]": ${kafka.host}
+          "[auto.commit.interval.ms]": 1000
+        consumerExtra: #消费端工厂配置，可设置简单的参数，也可以直接设置工厂
+          one:  # 实例化到spring中的beanName
+            ackDiscarded: true
+            polltimeout: 4000
+            factoryFilter:
+              serializerClass: com.yynhblog.kafka.entity.TestDto
+              filtermap:
+                name: zhangsan,lisi
+                msg: "今天,未来"
+          one22:  # 实例化到spring中的beanName
+            ackDiscarded: true
+            polltimeout: 4000
+            factoryFilter:
+              custStrategy: com.yynhblog.kafka.config.kafkaconfig.factorystrategy.MyCustFacStrategy
+
+        producerConf:
+          "[bootstrap.servers]": ${kafka.host}
+          "[retries]": 2
+        producerBeanName: produ  #生产端需要特别设置beanname
+      2:
+        producerConf:
+          "[bootstrap.servers]": ${kafka.host}
+          "[retries]": 3
+        producerBeanName: produ22  #生产端需要特别设置beanname
+

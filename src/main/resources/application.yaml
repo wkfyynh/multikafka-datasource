@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: multikafka-datasource
+  profiles:
+    active: @profile.active@  # 默认开发环境
+  MVC: #以下两个配置会导致静态资源不能使用，但是可以捕获404异常
+    throw-exception-if-no-handler-found: true #出现错误时, 直接抛出异常
+  resources:
+    add-mappings: false #不要为我们工程中的资源文件建立映射
+  mvc:
+    async:
+      request-timeout: 5
+server:
+  port: 8080
+  servlet:
+    context-path: /kafka
+  compression:
+    enabled: true
+    min-response-size: 2048
+    mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
+#配置日志
+logging:
+  #此处存放日志的路径
+  config: classpath:log4j2.xml
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml # 指定Xml扫描路径
+  configuration:
+    jdbc-type-for-null: null # 指定为null，否则再插入空值时会报“无效的列类型”错误
+  global-config:
+    banner: false # 设置为false关闭MyBatis Plus Banner打印
+

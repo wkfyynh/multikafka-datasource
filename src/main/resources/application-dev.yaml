@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    dynamic:
+#      连接池配置
+      hikari:
+        max-lifetime: 1800000
+        max-pool-size: 10
+        min-idle: 10
+        connection-timeout: 30000
+      primary: one
+      strict: true
+      datasource:
+        one:
+          url: jdbc:mysql://127.0.0.1:3306/book?&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+        two:
+          url: jdbc:mysql://127.0.0.1:3306/book?&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+
+# undertow 相关
+server:
+  undertow:
+    threads:
+      io: 8
+      worker: 200
+    direct-buffers: true
+    accesslog:
+      enabled: true
+      prefix: undertow_log
+
+kafka:
+  host: localhost:9092
+  
+

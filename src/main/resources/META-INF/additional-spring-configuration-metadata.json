@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "sourceType": "com.yynhblog.kafka.config.kafkaconfig.beanconfig.KafkaConfigProperies",
+      "name": "kafka.cust.server",
+      "description": "kafka datasource",
+      "type": "java.util.Map<java.lang.String,com.yynhblog.kafka.config.kafkaconfig.beanconfig.KafkaDataSourceConfig>"
+    },
+    {
+      "sourceType": "com.yynhblog.kafka.config.kafkaconfig.beanconfig.KafkaDataSourceConfig",
+      "name": "kafka.cust.server.consumerConf",
+      "description": "消费者配置",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    },
+    {
+      "sourceType": "com.yynhblog.kafka.config.kafkaconfig.beanconfig.KafkaDataSourceConfig",
+      "name": "kafka.cust.server.producerConf",
+      "description": "生产者者配置",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    },
+    {
+      "sourceType": "com.yynhblog.kafka.config.kafkaconfig.beanconfig.KafkaDataSourceConfig",
+      "name": "kafka.cust.server.producerBeanName",
+      "description": "生产者的kafkatemplate beanid",
+      "type": "java.lang.String"
+    }
+  ]
+}

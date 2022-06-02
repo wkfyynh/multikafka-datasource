@@ -1,0 +1,58 @@
+#多数据源kafka 配置模板说明，不做打包
+kafka:
+  cust:
+    server:
+      1:
+        consumerConf: #kafka消费端核心配置,可以接收所有kafka消费工厂中的配置  ，其中group_id不要在这里配置，在@KafkaListener 中配置，不然会导致多个消费端公用一个配置,consumerExtra可以有多个，每个代表一个消费端，公用同级的consumerConf配置
+          "[bootstrap.servers]": localhost:9092
+          #          "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+          #          "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+          #          "[auto.offset.reset]": latest
+          "[auto.commit.interval.ms]": 1000
+        consumerExtra: #消费端工厂配置，可设置简单的参数，也可以直接设置工厂
+          one:  # 实例化到spring中的beanName ， 这个很重要，这个就是@KafkaListener 中工厂配置的名称
+            ackDiscarded: true
+            #          consumerFactory:
+            polltimeout: 4000
+            factoryFilter: #过滤工厂，如果消息需要开启过滤，首先ackDiscarded这个要设置成true
+              serializerClass: TestDto  #消息序列化成的对象
+              filterFiled: name #要对比的字段，即serializerClass定义的属性名
+              filterTarget: zhangsan #要对比的值，从filterFiled获取到的值会和filterTarget进行比较，相同则保留消息
+          one22:  # 实例化到spring中的beanName
+            ackDiscarded: true
+            #          consumerFactory:
+            polltimeout: 4000
+            factoryFilter:
+              custStrategy: MyCustFacStrategy  #定义的过滤策略工厂，更自由化
+
+        producerConf: #生产端核心配置
+          "[bootstrap.servers]": localhost:9092
+          #          "[acks]": all
+          #          "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
+          #          "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
+          #          "[batch.size]": 16384
+          "[retries]": 2
+        #          "[buffer.memory]": 33554432
+        producerBeanName: produ  #生产端需要特别设置beanname ， 一个server 中只能有一个producerConf 和producerBeanName
+      2:
+        consumerConf: #kafka消费端核心配置
+          "[bootstrap.servers]": localhost:9092
+          #          "[key.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+          #          "[value.deserializer]": org.apache.kafka.common.serialization.StringDeserializer
+          #          "[auto.offset.reset]": latest
+          "[auto.commit.interval.ms]": 2000
+        consumerExtra: #消费端工厂配置，可设置简单的参数，也可以直接设置工厂
+          two:  # 实例化到spring中的beanName
+            ackDiscarded: true
+            #          consumerFactory:
+            polltimeout: 4000
+        producerConf:
+          "[bootstrap.servers]": localhost:9092
+          #          "[acks]": all
+          #          "[key.serializer]": org.apache.kafka.common.serialization.StringSerializer
+          #          "[value.serializer]": org.apache.kafka.common.serialization.StringSerializer
+          #          "[batch.size]": 16384
+          "[retries]": 3
+        #          "[buffer.memory]": 33554432
+        producerBeanName: produ22  #生产端需要特别设置beanname
+

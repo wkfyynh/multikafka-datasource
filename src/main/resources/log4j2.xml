@@ -1,0 +1,57 @@
+<configuration status="OFF" monitorInterval="30">
+    <Properties>
+        <Property name="pattern">%highlight{%-5level}{ERROR=Bright RED, WARN=Bright Yellow, INFO=Bright Green,
+            DEBUG=Bright Cyan, TRACE=Bright White} %d %style{[%t]}{bright,magenta} %style{%c{1.}.%M(%L)} %M - %msg%xEx%n
+        </Property>
+        <Property name="logPath">logs/multikafka-datasource</Property>
+    </Properties>
+    <Appenders>
+        <!--设置在控制台打印日志-->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="info_app"
+                                 fileName="${logPath}/info_${cust:server.port}.log"
+                                 filePattern="${logPath}/info-%d{yyyy-MM-dd}.log">
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="15"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="error_app"
+                                 fileName="${logPath}/error_${cust:server.port}.log"
+                                 filePattern="${logPath}/error-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+                <ThresholdFilter level="ERROR"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="15"/>
+        </RollingRandomAccessFile>
+
+
+        <Async name="Async">
+            <AppenderRef ref="info_app"/>
+        </Async>
+
+
+    </Appenders>
+
+    <Loggers>
+        <!-- org.springframework 只输出 ERROR 级别以上的日志 -->
+        <Logger name="org.springframework" level="ERROR"/>
+        <Root level="INFO">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="info_app"/>
+            <AppenderRef ref="error_app"/>
+        </Root>
+    </Loggers>
+</configuration>
